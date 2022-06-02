@@ -7,22 +7,21 @@ def passcard_info_view(request, passcode):
     passcard = Passcard.objects.all()
     employee_passcard = passcard.get(passcode=passcode)
     visits = Visit.objects.filter(passcard=employee_passcard)
+    this_passcard_visits = []
+
     for visit in visits:
-        time_duration = get_duration(visit)
-        hours, minutes, seconds = format_duration(time_duration)
-        duration = f'{hours} ч. {minutes} мин.'
-        flag = is_visit_long(visit, minutes=60)
-        this_passcard_visits = [
-            {
+        employee_visit = {
                 'who_entered': visit.passcard.owner_name,
                 'entered_at': visit.entered_at,
-                'duration': duration,
-                'is_strange': flag
-            },
-        ]
-        context = {
-            'passcard': visit,
-            'this_passcard_visits': this_passcard_visits
+                'duration': format_duration(get_duration(visit)),
+                'is_strange': is_visit_long(visit, minutes=60)
+            }
 
-        }
+        this_passcard_visits.append(employee_visit)
+
+    context = {
+        'passcard': employee_passcard,
+        'this_passcard_visits': this_passcard_visits
+
+    }
     return render(request, 'passcard_info.html', context)
