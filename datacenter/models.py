@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 from django.utils.timezone import localtime
 from django.utils import timezone
@@ -35,30 +37,28 @@ class Visit(models.Model):
 def get_duration(visit):
     local_entry_time = localtime(visit.entered_at)
     local_exit_time = localtime(visit.leaved_at)
-    return local_exit_time - local_entry_time
+    return (local_exit_time - local_entry_time).total_seconds()
 
 
 def format_duration(duration):
-    days, seconds = duration.days, duration.seconds
-    hours = days * 24 + seconds // 3600
-    minutes = (seconds % 3600) // 60
-    seconds = (seconds % 60)
-    return hours, minutes, seconds
+    formatted_duration = str(timedelta(seconds=duration))
+    hours, minutes, seconds = formatted_duration.split(':')
+    return f'{hours} ч.{minutes} мин.'
 
 
 def is_visit_long(visit, minutes=60):
-    duration_of_visit_time = get_duration(visit)
-    duration_in_seconds = duration_of_visit_time.total_seconds()
-    duration_in_minutes = (duration_in_seconds % 3600) // 60
+    duration = get_duration(visit)
+    duration_in_minutes = duration / 60
 
-    if duration_in_minutes > minutes:
-        return True
-    elif visit.entered_at is None:
+    if not visit.leaved_at:
         entry_time = localtime(visit.entered_at)
-        now = timezone.now()
+        now = localtime(timezone.now())
         time_delta_seconds = (now - entry_time).total_seconds()
-        time_delta_minutes = (time_delta_seconds % 3600) // 60
+        time_delta_minutes = time_delta_seconds / 60
+
         if time_delta_minutes > minutes:
             return True
-    else:
+    elif duration_in_minutes < minutes:
         return False
+    else:
+        return True
