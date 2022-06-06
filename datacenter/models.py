@@ -55,10 +55,6 @@ def is_visit_long(visit, minutes=60):
         now = localtime(timezone.now())
         time_delta_seconds = (now - entry_time).total_seconds()
         time_delta_minutes = time_delta_seconds / 60
-
-        if time_delta_minutes > minutes:
-            return True
-    elif duration_in_minutes < minutes:
-        return False
+        return time_delta_minutes > minutes
     else:
-        return True
+        return duration_in_minutes > minutes
