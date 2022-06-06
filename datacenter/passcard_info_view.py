@@ -4,12 +4,11 @@ from django.shortcuts import render
 
 
 def passcard_info_view(request, passcode):
-    passcard = Passcard.objects.all()
-    employee_passcard = passcard.get(passcode=passcode)
-    visits = Visit.objects.filter(passcard=employee_passcard)
-    this_passcard_visits = []
+    passcards = Passcard.objects.all().get(passcode=passcode)
+    filtered_passcard = Visit.objects.filter(passcard=passcards)
+    serialized_passcard_visits = []
 
-    for visit in visits:
+    for visit in filtered_passcard:
         employee_visit = {
                 'who_entered': visit.passcard.owner_name,
                 'entered_at': visit.entered_at,
@@ -17,11 +16,11 @@ def passcard_info_view(request, passcode):
                 'is_strange': is_visit_long(visit, minutes=60)
             }
 
-        this_passcard_visits.append(employee_visit)
+        serialized_passcard_visits.append(employee_visit)
 
     context = {
-        'passcard': employee_passcard,
-        'this_passcard_visits': this_passcard_visits
+        'passcard': passcards,
+        'this_passcard_visits': serialized_passcard_visits
 
     }
     return render(request, 'passcard_info.html', context)
