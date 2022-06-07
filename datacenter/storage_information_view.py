@@ -7,10 +7,10 @@ from django.utils.timezone import localtime
 
 def storage_information_view(request):
     visits = Visit.objects.all()
-    filtered_visits = visits.filter(leaved_at=None)
+    filtered_active_visits = visits.filter(leaved_at=None)
     serialized_visits = []
 
-    for visit in filtered_visits:
+    for visit in filtered_active_visits:
         entry_time = localtime(visit.entered_at)
         now = localtime(timezone.now())
         time_delta = (now - entry_time).total_seconds()
