@@ -17,7 +17,8 @@
 Установить True или False по необходимости.
 
 
-Программа запускается в терминале командой ```python manage.py runserver```
+Программа запускается в терминале командой ```python manage.py runserver```:
+![Screenshot_4](https://user-images.githubusercontent.com/39937490/173389309-b0546721-e3fa-49a4-ab0c-084fa3d94730.jpg)
 
 
 Python3 должен быть уже установлен. 
