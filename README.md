@@ -4,18 +4,22 @@
 
 
 ### Как установить
-Настроки необходимые для запуска скрипта содержаться в файлах ```settings.py``` и ```.env```.
-Файл ```settings.py``` содержит следующие настройки, необходимые для подключения к БД и работы программы: ```HOST```, ```PORT```, ```NAME```, ```USER```, ```PASSWORD```.
+Необходимо настроить файл ```.env```, который должен содержать следующие заполненные настройки, необходимые для подключения к БД и работы программы: 
+```
+DATABASE_LOGIN = ' '
+DATABASE_PASSWORD = ' '
+DATABASE_HOST = ' '
+DATABASE_NAME = ' '
+DATABASE_PORT = ' '
+SECRET_KEY = ' '
+DEBUG = False
+ALLOWED_HOSTS = []
+```
 
-![Screenshot_1](https://user-images.githubusercontent.com/39937490/172943599-18bc5ea3-0ae8-4f5c-adec-69abd480dcd7.jpg)
-
-Настройки пароля и логина пользователя БД содержаться в файле ```.env```:
-
-![Screenshot_2](https://user-images.githubusercontent.com/39937490/172943631-c406db4d-baf2-4ca4-86f6-878627cf3fbc.jpg)
-
-Также ```.env``` содержит серкетный ключ сайта и параметр для перевода сайта в режим отладки ```DEBUG```. 
+```DEBUG``` - параметр для перевода сайта в режим отладки.
 Установить True или False по необходимости.
 
+```ALLOWED_HOSTS``` - Список хостов/доменов, для которых может работать пульт охраны.
 
 Программа запускается в терминале командой ```python manage.py runserver```:
 ![Screenshot_4](https://user-images.githubusercontent.com/39937490/173389309-b0546721-e3fa-49a4-ab0c-084fa3d94730.jpg)
